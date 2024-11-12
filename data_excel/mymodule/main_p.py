@@ -3489,9 +3489,8 @@ class FirstTab(QWidget):
             pp = '지불조건'
             ###################
 
-
-
-
+            q = '1년 주문건수'
+            qq = '1년 주문건수'
 
             ###############엑셀
             file_path, ext = QFileDialog.getOpenFileName(self, '파일 열기', os.getcwd(), 'excel file (*.xls *.xlsx)')
@@ -3517,12 +3516,12 @@ class FirstTab(QWidget):
 
 
                 self.df_list.rename(
-                    columns={a: aa, b: bb, c: cc, d: dd, f: ff, g: gg, j: jj, k: kk, l: ll, m: mm, n: nn}, inplace = True)
+                    columns={a: aa, b: bb, c: cc, d: dd, f: ff, q:qq, g: gg, j: jj, k: kk, l: ll, m: mm, n: nn}, inplace = True)
                 print("재정비")
                 print(self.df_list)
 
                 print("원하는 열 나열하기1")
-                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp]].values.tolist()
+                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp]].values.tolist()
                 print("원하는 열 나열하기2")
                 print(columns_list)
                 #
@@ -3563,13 +3562,13 @@ class FirstTab(QWidget):
                 last = str(day) + "d_" + str(hour) + "h" + str(minute) + "m"
                 nowDay = str(nowDay_)
 
-                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
                 dir_path = "C:/my_games/excel_result/" + str(year) + "/" + str(month) + "/"
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
 
-                temporary_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
-                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                temporary_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
                 # dd 품목명, ee 수량, gg 메모1
                 print("new_data 1", new_data)
                 for set_2 in range(result_set_2_len):
@@ -3595,6 +3594,9 @@ class FirstTab(QWidget):
                         temporary_data = temporary_data.drop(temporary_data.index[:len(temporary_data)])
                         temporary_data = pd.concat([temporary_data, result])
                     print("뽑아낸 temporary_data", temporary_data)
+
+                    total_ = 0
+
                     # 뽑아낸 주문번호의 중복갯수로 다시 반복문 돌려서 작업하기
                     for set_index in range(len(result.index)):
 
@@ -3609,12 +3611,12 @@ class FirstTab(QWidget):
                         # many = temporary_data[temporary_data[gg] == temporary_data[gg][result.index[set_index]]]
                         # print("how many???", len(many.index))
 
-                        # add_write = "=> " + str(len(many.index)) + "ea"
-                        print("set_index", set_index)
-                        print("set_index?", result.index[set_index])
-                        # print("here???", result[gg][set_index])
-                        # print("here????????", result[ee][set_index])
-                        add_write = "=> " + str(result[ee][result.index[set_index]]) + "ea"
+                        # print("set_index", set_index)
+                        # print("set_index?", result.index[set_index])
+                        add_write = "=> " + str(result[ee][result.index[set_index]]) + " ea"
+
+
+
                         if set_index == 0:
                             test = df.loc[result.index[set_index], gg] + str(add_write)
                             print("add_write", add_write)
@@ -3656,14 +3658,25 @@ class FirstTab(QWidget):
                             #     print("g")
                             # new_data.loc[set_2, gg] = new_data.loc[set_2, gg] + "\n" + df.loc[result.index[set_index], gg]
 
-                        print("new_data for", new_data)
-                        print("new_data for2", new_data[dd])
+                        # print("new_data for", new_data)
+                        # print("new_data for2", new_data[dd])
 
-                print("new_data 2", new_data)
-                print("new_data 3", len(new_data))
+                        # total 갯수 구하기
+                        total_ += int(result[ee][result.index[set_index]])
+                        print("total_", total_)
+                        if len(result.index) - 1 == set_index:
+                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
 
+                # print("new_data 2", new_data)
+                # print("new_data 3", len(new_data))
+
+
+                # 수량 1로 바꾸기
                 for many in range(len(new_data)):
                     new_data.loc[many, ee] = 1
+                # 메모1 빼고 '1년 구매건수'로 바꾸기
+                new_data = pd.DataFrame(new_data,
+                                  columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp])
 
                 # 데이터프레임을 엑셀 파일로 저장
                 excel_file_name = dir_path + last + "_송장발부.xlsx"
