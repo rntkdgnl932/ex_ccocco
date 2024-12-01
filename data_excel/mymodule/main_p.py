@@ -3689,11 +3689,11 @@ class FirstTab(QWidget):
 
                                     result_split = new_data.loc[set_2, dd].split('\n')
                                     print("new_data.loc[set_2, dd].split('\n')", result_split)
-                                    for i in range(13):
-                                        if i == 0:
-                                            new_data.loc[set_2, dd] = result_split[i]
-                                        elif i < 10:
-                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[i]
+                                    for w in range(13):
+                                        if w == 0:
+                                            new_data.loc[set_2, dd] = result_split[w]
+                                        elif w < 10:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
                                         else:
                                             new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
