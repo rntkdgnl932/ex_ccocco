@@ -3756,8 +3756,6 @@ class FirstTab(QWidget):
                     QTest.qWait(100)
                     # 검색된 것을 임시로 저장하기
 
-                    total_ = 0
-
                     # 뽑아낸 주문번호의 중복갯수로 다시 반복문 돌려서 작업하기
                     for set_index in range(len(result.index)):
                         df_send_result = df_send.iloc[result.index[set_index]]
