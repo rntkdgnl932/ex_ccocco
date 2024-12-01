@@ -3683,12 +3683,15 @@ class FirstTab(QWidget):
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
                             if '\n' in new_data.loc[set_2, dd]:
-                                if total_ < 14:
+
+                                result_split = new_data.loc[set_2, dd].split('\n')
+                                print("new_data.loc[set_2, dd].split('\n')", result_split)
+
+                                if len(result_split) < 14:
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
                                 else:
 
-                                    result_split = new_data.loc[set_2, dd].split('\n')
-                                    print("new_data.loc[set_2, dd].split('\n')", result_split)
+
                                     for w in range(13):
                                         if w == 0:
                                             new_data.loc[set_2, dd] = result_split[w]
