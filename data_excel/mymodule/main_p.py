@@ -3789,12 +3789,16 @@ class FirstTab(QWidget):
                 excel_file_name = dir_path + last + "_송장발부.xlsx"
                 # df.to_excel(excel_file_name, index=False)
                 # writer_1 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False})
+                new_data[mm] = new_data[mm].astype(str)
+                new_data[nn] = new_data[nn].astype(str)
                 new_data.to_excel(excel_file_name, index=False, engine="openpyxl")
                 # writer_1.save()
 
                 excel_file_name = dir_path + last + "_발송처리.xlsx"
                 # df.to_excel(excel_file_name, index=False)
                 # writer_2 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False})
+                send_data[nn] = send_data[nn].astype(str)
+                send_data[mm] = send_data[mm].astype(str)
                 send_data.to_excel(excel_file_name, index=False, sheet_name='발송처리', engine='openpyxl')
                 # writer_2.save()
 
@@ -3829,6 +3833,7 @@ class FirstTab(QWidget):
             excel = msoffcrypto.OfficeFile(f)
             excel.load_key(password)
             excel.decrypt(temp)
+            # df = pd.read_excel(temp, skiprows=[0], converters={"code": lambda x: str(x)})
             df = pd.read_excel(temp, skiprows=[0])
             del temp
             # df = df.drop(1)
