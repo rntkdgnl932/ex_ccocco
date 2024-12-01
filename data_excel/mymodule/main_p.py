@@ -3682,27 +3682,31 @@ class FirstTab(QWidget):
                         total_ += int(result[ee][result.index[set_index]])
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
-                            if '\n' in new_data.loc[set_2, dd]:
 
-                                result_split = new_data.loc[set_2, dd].split('\n')
-                                print("new_data.loc[set_2, dd].split('\n')", result_split)
+                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
 
-                                if len(result_split) < 14:
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                                else:
-
-
-                                    for w in range(13):
-                                        if w == 0:
-                                            new_data.loc[set_2, dd] = result_split[w]
-                                        elif w < 10:
-                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
-                                        else:
-                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                            else:
-                                new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(
-                                    total_) + " ea"
+                            # if '\n' in new_data.loc[set_2, dd]:
+                            #
+                            #     result_split = new_data.loc[set_2, dd].split('\n')
+                            #     print("new_data.loc[set_2, dd].split('\n')", result_split)
+                            #
+                            #     if len(result_split) < 14:
+                            #         new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n"
+                            #     else:
+                            #
+                            #
+                            #         for w in range(13):
+                            #             if w == 0:
+                            #
+                            #                 new_data.loc[set_2, dd] = result_split[w]
+                            #             elif w < 10:
+                            #                 new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
+                            #             else:
+                            #                 new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
+                            #         new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                            # else:
+                            #     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(
+                            #         total_) + " ea"
 
                                         # print("new_data 2", new_data)
                 # print("new_data 3", len(new_data))
@@ -3791,7 +3795,8 @@ class FirstTab(QWidget):
                 # 데이터프레임을 엑셀 파일로 저장
                 excel_file_name = dir_path + last + "_송장발부.xlsx"
                 # df.to_excel(excel_file_name, index=False)
-                # writer_1 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False})
+                # writer_1 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False}
+                new_data[dd] = new_data[dd].astype(str)
                 new_data[mm] = new_data[mm].astype(str)
                 new_data[nn] = new_data[nn].astype(str)
                 new_data.to_excel(excel_file_name, index=False, engine="openpyxl")
