@@ -3682,9 +3682,26 @@ class FirstTab(QWidget):
                         total_ += int(result[ee][result.index[set_index]])
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
-                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                            if '\n' in new_data.loc[set_2, dd]:
+                                if total_ < 14:
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                                else:
 
-                # print("new_data 2", new_data)
+                                    result_split = new_data.loc[set_2, dd].split('\n')
+                                    print("new_data.loc[set_2, dd].split('\n')", result_split)
+                                    for i in range(13):
+                                        if i == 0:
+                                            new_data.loc[set_2, dd] = result_split[i]
+                                        elif i < 10:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[i]
+                                        else:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                            else:
+                                new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(
+                                    total_) + " ea"
+
+                                        # print("new_data 2", new_data)
                 # print("new_data 3", len(new_data))
 
 
@@ -3765,15 +3782,21 @@ class FirstTab(QWidget):
                 ###################################################
                 ###################################################
                 ##################################################
+                new_data.astype(str)
+                send_data.astype(str)
 
                 # 데이터프레임을 엑셀 파일로 저장
                 excel_file_name = dir_path + last + "_송장발부.xlsx"
                 # df.to_excel(excel_file_name, index=False)
-                new_data.to_excel(excel_file_name, index=False)
+                # writer_1 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False})
+                new_data.to_excel(excel_file_name, index=False, engine="openpyxl")
+                # writer_1.save()
 
                 excel_file_name = dir_path + last + "_발송처리.xlsx"
                 # df.to_excel(excel_file_name, index=False)
-                send_data.to_excel(excel_file_name, index=False, sheet_name='발송처리')
+                # writer_2 = pd.ExcelWriter(excel_file_name, options={'strings_to_urls': False})
+                send_data.to_excel(excel_file_name, index=False, sheet_name='발송처리', engine='openpyxl')
+                # writer_2.save()
 
                 btn = pyautogui.alert(button='오냐', text='엑셀 파일로 저장했습니다. 꼬꼬님', title='엑셀로 저장')
                 print(btn)
