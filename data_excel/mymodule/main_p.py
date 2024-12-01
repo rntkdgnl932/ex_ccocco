@@ -3492,7 +3492,13 @@ class FirstTab(QWidget):
             q = '1년 주문건수'
             qq = '1년 주문건수'
 
-            ###############엑셀
+            ##################
+
+            r = '배송방법'
+            s = '택배사'
+            t = '송장번호'
+
+            ##############엑셀
             file_path, ext = QFileDialog.getOpenFileName(self, '파일 열기', os.getcwd(), 'excel file (*.xls *.xlsx)')
             if file_path:
 
@@ -3512,11 +3518,14 @@ class FirstTab(QWidget):
                 data_p = "신용"
                 self.df_list[str(pp)] = data_p
 
+                data_s = "한진택배"
+                self.df_list[str(s)] = data_s
+
                 print(self.df_list)
 
 
                 self.df_list.rename(
-                    columns={a: aa, b: bb, c: cc, d: dd, f: ff, q:qq, g: gg, j: jj, k: kk, l: ll, m: mm, n: nn}, inplace = True)
+                    columns={a: aa, b: bb, c: cc, d: dd, f: ff, q: qq, g: gg, j: jj, k: kk, l: ll, m: mm, n: nn}, inplace = True)
                 print("재정비")
                 print(self.df_list)
 
@@ -3562,13 +3571,21 @@ class FirstTab(QWidget):
                 last = str(day) + "d_" + str(hour) + "h" + str(minute) + "m"
                 nowDay = str(nowDay_)
 
+                ################ 송장 발부 #############
                 df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
                 dir_path = "C:/my_games/excel_result/" + str(year) + "/" + str(month) + "/"
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
 
                 temporary_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+
+                # 송장발부용
                 new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+
+
+
+
+
                 # dd 품목명, ee 수량, gg 메모1
                 print("new_data 1", new_data)
                 for set_2 in range(result_set_2_len):
@@ -3636,7 +3653,7 @@ class FirstTab(QWidget):
                             print("수정 및 추가하기1", new_data)
                             print("수정 및 추가하기2", result.index[set_index])
 
-                            # 마지막으로 같은 문구 갯수 파악하기
+                            # [송장발부]마지막으로 같은 문구 갯수 파악하기
                             result_memo = new_data[new_data[dd] == result.loc[result.index[set_index], gg]] + add_write
 
                             print("수정 및 추가하기3", result_memo)
@@ -3646,7 +3663,7 @@ class FirstTab(QWidget):
                                 new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[
                                     result.index[set_index], gg] + add_write
                             else:
-                                print("이미 있다.", result_memo[gg])
+                                print("송장발부는 이미 있다..", result_memo[gg])
 
 
                             # # 마지막으로 같은 문구 갯수 파악하기
@@ -3678,10 +3695,87 @@ class FirstTab(QWidget):
                 new_data = pd.DataFrame(new_data,
                                   columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp])
 
+                #################################################
+                #################################################
+                #################################################
+                print("발송처리 부분")
+
+
+                # data_s = "한진택배"
+                # self.df_list[str(s)] = data_s
+
+                # get_name = "받으시는 분"
+                # billing_number = "운송장번호"
+                # df_send = pd.DataFrame(columns_list, columns=[nn, r, s, t, a, "비고", mm, get_name, billing_number])
+                self.df_list.rename(
+                    columns={aa: a},
+                    inplace=True)
+                print("재정비")
+                print(self.df_list)
+
+                print("발송처리 : 원하는 열 나열하기1")
+                columns_list = self.df_list[
+                    [nn, r, s, t, a, mm]].values.tolist()
+                print("발송처리 : 원하는 열 나열하기2")
+                print(columns_list)
+                #
+
+                # 출고번호(m)에서 동일한거 묶고
+
+                # 메모1(g)과 수량(e)를 품목명(d)에 다시 수정한다.
+
+                print("특정 열 나열하기")
+                columns_list_m = self.df_list[mm].values.tolist()
+                print(columns_list_m)
+                print("[[특정 열 중복제거]]")
+                result_set_1 = set(columns_list_m)
+                print("특정 열 중복제거 준비", result_set_1)
+                result_set_1_len = len(result_set_1)
+
+                result_set_2 = list(result_set_1)
+                print("특정 열 중복제거 완료", result_set_2)
+                result_set_2_len = len(result_set_2)
+
+                ################ 발송 처리 #############
+
+                df_send = pd.DataFrame(columns_list, columns=[nn, r, s, t, a, mm])
+
+                # 발송처리용
+
+                get_name = "출고번호넣기"
+                billing_number = "운송장번호"
+
+                send_data = pd.DataFrame(columns=[nn, r, s, t, a, "비고", mm, get_name, billing_number])
+
+
+                # dd 품목명, ee 수량, gg 메모1
+                for set_2 in range(result_set_2_len):
+
+                    # 출고번호로 검색한 것...
+                    result = df_send[df_send[mm] == result_set_2[set_2]]
+                    QTest.qWait(100)
+                    # 검색된 것을 임시로 저장하기
+
+                    total_ = 0
+
+                    # 뽑아낸 주문번호의 중복갯수로 다시 반복문 돌려서 작업하기
+                    for set_index in range(len(result.index)):
+                        df_send_result = df_send.iloc[result.index[set_index]]
+                        send_data.loc[len(send_data)] = df_send_result
+
+
+                ###################################################
+                ###################################################
+                ##################################################
+
                 # 데이터프레임을 엑셀 파일로 저장
                 excel_file_name = dir_path + last + "_송장발부.xlsx"
                 # df.to_excel(excel_file_name, index=False)
                 new_data.to_excel(excel_file_name, index=False)
+
+                excel_file_name = dir_path + last + "_발송처리.xlsx"
+                # df.to_excel(excel_file_name, index=False)
+                send_data.to_excel(excel_file_name, index=False, sheet_name='발송처리')
 
                 btn = pyautogui.alert(button='오냐', text='엑셀 파일로 저장했습니다. 꼬꼬님', title='엑셀로 저장')
                 print(btn)
