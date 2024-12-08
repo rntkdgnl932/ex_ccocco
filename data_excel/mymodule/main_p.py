@@ -3498,6 +3498,10 @@ class FirstTab(QWidget):
             s = '택배사'
             t = '송장번호'
 
+            ############ 추가
+
+            gagin = "각인"
+
             ##############엑셀
             file_path, ext = QFileDialog.getOpenFileName(self, '파일 열기', os.getcwd(), 'excel file (*.xls *.xlsx)')
             if file_path:
@@ -3527,10 +3531,14 @@ class FirstTab(QWidget):
                 self.df_list.rename(
                     columns={a: aa, b: bb, c: cc, d: dd, f: ff, q: qq, g: gg, j: jj, k: kk, l: ll, m: mm, n: nn}, inplace = True)
                 print("재정비")
+
+                self.df_list[gagin] = ""
+
                 print(self.df_list)
 
                 print("원하는 열 나열하기1")
-                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp]].values.tolist()
+                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin]].values.tolist()
+
                 print("원하는 열 나열하기2")
                 print(columns_list)
                 #
@@ -3572,7 +3580,7 @@ class FirstTab(QWidget):
                 nowDay = str(nowDay_)
 
                 ################ 송장 발부 #############
-                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
                 dir_path = "C:/my_games/excel_result/" + str(year) + "/" + str(month) + "/"
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
@@ -3580,7 +3588,7 @@ class FirstTab(QWidget):
                 temporary_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
 
                 # 송장발부용
-                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
 
 
 
@@ -3639,6 +3647,9 @@ class FirstTab(QWidget):
                             print("add_write", add_write)
                             print("test", test)
                             df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], gg] + str(add_write)
+
+                            df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], gg] + str(add_write)
+
                             df_2 = df.iloc[result.index[0]]
                             print("set_index == 0", df_2)
                             new_data.loc[len(new_data)] = df_2
@@ -3660,8 +3671,8 @@ class FirstTab(QWidget):
 
                             if len(result_memo.index) == 0:
                                 print("없당.", result_memo[gg])
-                                new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[
-                                    result.index[set_index], gg] + add_write
+                                new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], gg] + add_write
+                                new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], gg] + add_write
                             else:
                                 print("송장발부는 이미 있다..", result_memo[gg])
 
@@ -3679,35 +3690,41 @@ class FirstTab(QWidget):
                         # print("new_data for2", new_data[dd])
 
                         # total 갯수 구하기
+
+                        # 몇개 표시할지...
+                        title_display_count = 11
                         total_ += int(result[ee][result.index[set_index]])
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
 
-                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                            # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                            new_data.loc[set_2, gagin] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
 
-                            # if '\n' in new_data.loc[set_2, dd]:
-                            #
-                            #     result_split = new_data.loc[set_2, dd].split('\n')
-                            #     print("new_data.loc[set_2, dd].split('\n')", result_split)
-                            #
-                            #     if len(result_split) < 14:
-                            #         new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n"
-                            #     else:
-                            #
-                            #
-                            #         for w in range(13):
-                            #             if w == 0:
-                            #
-                            #                 new_data.loc[set_2, dd] = result_split[w]
-                            #             elif w < 10:
-                            #                 new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
-                            #             else:
-                            #                 new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
-                            #         new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                            # else:
-                            #     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(
-                            #         total_) + " ea"
+                            if '\n' in new_data.loc[set_2, dd]:
 
+                                result_split = new_data.loc[set_2, dd].split('\n')
+                                print("new_data.loc[set_2, dd].split('\n')", result_split)
+
+                                if len(result_split) < title_display_count + 1:
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd]
+                                    new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[
+                                        set_2, dd]
+                                else:
+
+
+                                    for w in range(title_display_count):
+                                        if w == 0:
+
+                                            new_data.loc[set_2, dd] = result_split[w]
+                                        elif w < title_display_count - 3:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
+                                        else:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
+                                    # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                                    new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+                            else:
+                                # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
+                                new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
                                         # print("new_data 2", new_data)
                 # print("new_data 3", len(new_data))
 
@@ -3717,7 +3734,7 @@ class FirstTab(QWidget):
                     new_data.loc[many, ee] = 1
                 # 메모1 빼고 '1년 구매건수'로 바꾸기
                 new_data = pd.DataFrame(new_data,
-                                  columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp])
+                                  columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
 
                 #################################################
                 #################################################
