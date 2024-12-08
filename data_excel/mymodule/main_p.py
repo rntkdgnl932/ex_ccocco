@@ -3689,16 +3689,23 @@ class FirstTab(QWidget):
                         # print("new_data for", new_data)
                         # print("new_data for2", new_data[dd])
 
-                        # total 갯수 구하기
+                        # total 갯수 구하기 및 1년 주문건수
 
-                        # 몇개 표시할지...
+
                         title_display_count = 11
                         total_ += int(result[ee][result.index[set_index]])
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
 
+                            # 몇개 표시할지...
+
                             # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                            new_data.loc[set_2, gagin] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+                            new_data.loc[set_2, gagin] = "[hobby brown] total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+
+                            # 1년 주문건수
+                            # if new_data.loc[set_2, qq] > 0:
+                            new_data.loc[set_2, gagin] = "1년 주문건수 : " + str(new_data.loc[set_2, qq]) + "건" + "\n" + \
+                                                         new_data.loc[set_2, gagin]
 
                             if '\n' in new_data.loc[set_2, dd]:
 
@@ -3707,7 +3714,7 @@ class FirstTab(QWidget):
 
                                 if len(result_split) < title_display_count + 1:
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd]
-                                    new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[
+                                    new_data.loc[set_2, dd] = "[hobby brown] total => " + str(total_) + " ea" + "\n\n" + new_data.loc[
                                         set_2, dd]
                                 else:
 
@@ -3718,14 +3725,19 @@ class FirstTab(QWidget):
                                             new_data.loc[set_2, dd] = result_split[w]
                                         elif w < title_display_count - 3:
                                             new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_split[w]
+                                        elif w == title_display_count - 1:
+                                            new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str("^_~")
                                         else:
                                             new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + str(".")
                                     # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                                    new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+                                    new_data.loc[set_2, dd] = "[hobby brown] total => " + str(total_) + " ea" + "\n\n" + new_data.loc[set_2, dd]
                             else:
                                 # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                                new_data.loc[set_2, dd] = "total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+                                new_data.loc[set_2, dd] = "[hobby brown] total => " + str(total_) + " ea" + "\n\n" + new_data.loc[set_2, dd]
                                         # print("new_data 2", new_data)
+
+
+
                 # print("new_data 3", len(new_data))
 
 
