@@ -3646,8 +3646,10 @@ class FirstTab(QWidget):
                             test = df.loc[result.index[set_index], gg] + str(add_write)
                             print("add_write", add_write)
                             print("test", test)
-                            result_memo = new_data[new_data[dd] == result.loc[result.index[set_index], gg]] + add_write
-                            if len(result_memo[gg]) == 0:
+
+                            # print("df.loc[result.index[set_index], gg]", df.loc[result.index[set_index], gg])
+                            if pd.isnull(df.loc[result.index[set_index], gg]) == True:
+                            # if len(df.loc[result.index[set_index], gg]) == 0:
                                 df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], dd] + str(add_write)
 
                                 df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], dd] + str(add_write)
@@ -3674,10 +3676,14 @@ class FirstTab(QWidget):
                             result_memo = new_data[new_data[dd] == result.loc[result.index[set_index], gg]] + add_write
 
                             print("수정 및 추가하기3", result_memo)
+                            print("수정 및 추가하기4", df.loc[result.index[set_index], gg])
+
+                            if pd.isnull(df.loc[result.index[set_index], gg]) == True:
+                                print("this is nan")
 
                             if len(result_memo.index) == 0:
                                 print("없당.", result_memo[gg])
-                                if len(result_memo[gg]) == 0:
+                                if pd.isnull(df.loc[result.index[set_index], gg]) == True:
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], dd] + add_write
                                     new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], dd] + add_write
                                 else:
@@ -3710,7 +3716,7 @@ class FirstTab(QWidget):
                             # 몇개 표시할지...
 
                             # new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + "total => " + str(total_) + " ea"
-                            new_data.loc[set_2, gagin] = "[hobby brown] total => " + str(total_) + " ea" + "\n" + new_data.loc[set_2, dd]
+                            new_data.loc[set_2, gagin] = "[hobby brown] total => " + str(total_) + " ea" + "\n\n" + new_data.loc[set_2, dd]
 
                             # 1년 주문건수
                             # if new_data.loc[set_2, qq] > 0:
