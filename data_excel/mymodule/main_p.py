@@ -3646,9 +3646,15 @@ class FirstTab(QWidget):
                             test = df.loc[result.index[set_index], gg] + str(add_write)
                             print("add_write", add_write)
                             print("test", test)
-                            df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], gg] + str(add_write)
+                            result_memo = new_data[new_data[dd] == result.loc[result.index[set_index], gg]] + add_write
+                            if len(result_memo[gg]) == 0:
+                                df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], dd] + str(add_write)
 
-                            df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], gg] + str(add_write)
+                                df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], dd] + str(add_write)
+                            else:
+                                df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], gg] + str(add_write)
+
+                                df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], gg] + str(add_write)
 
                             df_2 = df.iloc[result.index[0]]
                             print("set_index == 0", df_2)
@@ -3671,8 +3677,12 @@ class FirstTab(QWidget):
 
                             if len(result_memo.index) == 0:
                                 print("없당.", result_memo[gg])
-                                new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], gg] + add_write
-                                new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], gg] + add_write
+                                if len(result_memo[gg]) == 0:
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], dd] + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], dd] + add_write
+                                else:
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], gg] + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], gg] + add_write
                             else:
                                 print("송장발부는 이미 있다..", result_memo[gg])
 
