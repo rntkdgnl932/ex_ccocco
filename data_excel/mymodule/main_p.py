@@ -3624,7 +3624,7 @@ class FirstTab(QWidget):
 
                     # 뽑아낸 주문번호의 중복갯수로 다시 반복문 돌려서 작업하기
                     for set_index in range(len(result.index)):
-
+                        print("여기인가 1")
                         ###############
 
                         # 해당문구 추출하여 갯수파악하고 바로 수량 적어놓기
@@ -3643,9 +3643,12 @@ class FirstTab(QWidget):
 
 
                         if set_index == 0:
-                            test = df.loc[result.index[set_index], gg] + str(add_write)
-                            print("add_write", add_write)
-                            print("test", test)
+                            # print("여기인가 2")
+                            # print("여기인가 2", df.loc[result.index[set_index], gg])
+                            # print("여기인가 2", str(add_write))
+                            # test = df.loc[result.index[set_index], gg] + str(add_write)
+                            # print("add_write", add_write)
+                            # print("test", test)
 
                             # print("df.loc[result.index[set_index], gg]", df.loc[result.index[set_index], gg])
                             if pd.isnull(df.loc[result.index[set_index], gg]) == True:
@@ -3709,6 +3712,7 @@ class FirstTab(QWidget):
 
 
                         title_display_count = 11
+                        print("total_total_total_total_total_total_", result[ee][result.index[set_index]])
                         total_ += int(result[ee][result.index[set_index]])
                         print("total_", total_)
                         if len(result.index) - 1 == set_index:
