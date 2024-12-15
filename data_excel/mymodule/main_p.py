@@ -3694,15 +3694,15 @@ class FirstTab(QWidget):
                             if len(result_memo.index) == 0:
                                 print("없당.", result_memo[gg])
                                 if pd.isnull(df.loc[result.index[set_index], gg]) == True:
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" +  result_write_num + df.loc[result.index[set_index], dd] + add_write
-                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" +  result_write_num + df.loc[result.index[set_index], dd] + add_write
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_write_num + df.loc[result.index[set_index], dd] + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + df.loc[result.index[set_index], dd] + add_write
                                 else:
 
                                     write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
                                     write_memo = write_memo.replace("여기에 각인 문구:", "")
 
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" +  result_write_num + write_memo + add_write
-                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" +  result_write_num + write_memo + add_write
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_write_num + write_memo + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + write_memo + add_write
                             else:
                                 print("송장발부는 이미 있다..", result_memo[gg])
 
