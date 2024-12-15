@@ -3446,6 +3446,9 @@ class FirstTab(QWidget):
         print("hello!!!!!!!!!!")
 
     def mytestin_(self):
+
+        from openpyxl.styles import Font
+
         try:
             # x = Test_check(self)
             # # self.mytestin.setText("GootEvening")
@@ -3640,7 +3643,8 @@ class FirstTab(QWidget):
                         # print("set_index?", result.index[set_index])
                         add_write = "=> " + str(result[ee][result.index[set_index]]) + " ea"
 
-
+                        write_num = set_index + 1
+                        result_write_num = str(write_num) + ". "
 
                         if set_index == 0:
                             # print("여기인가 2")
@@ -3653,13 +3657,16 @@ class FirstTab(QWidget):
                             # print("df.loc[result.index[set_index], gg]", df.loc[result.index[set_index], gg])
                             if pd.isnull(df.loc[result.index[set_index], gg]) == True:
                             # if len(df.loc[result.index[set_index], gg]) == 0:
-                                df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], dd] + str(add_write)
+                                df.loc[result.index[set_index], dd] = result_write_num + df.loc[result.index[set_index], dd] + str(add_write)
 
-                                df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], dd] + str(add_write)
+                                df.loc[result.index[set_index], gagin] = result_write_num + df.loc[result.index[set_index], dd] + str(add_write)
                             else:
-                                df.loc[result.index[set_index], dd] = df.loc[result.index[set_index], gg] + str(add_write)
 
-                                df.loc[result.index[set_index], gagin] = df.loc[result.index[set_index], gg] + str(add_write)
+                                write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
+                                write_memo = write_memo.replace("여기에 각인 문구:", "")
+                                df.loc[result.index[set_index], dd] = result_write_num + write_memo + str(add_write)
+
+                                df.loc[result.index[set_index], gagin] = result_write_num + write_memo + str(add_write)
 
                             df_2 = df.iloc[result.index[0]]
                             print("set_index == 0", df_2)
@@ -3687,11 +3694,15 @@ class FirstTab(QWidget):
                             if len(result_memo.index) == 0:
                                 print("없당.", result_memo[gg])
                                 if pd.isnull(df.loc[result.index[set_index], gg]) == True:
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], dd] + add_write
-                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], dd] + add_write
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" +  result_write_num + df.loc[result.index[set_index], dd] + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" +  result_write_num + df.loc[result.index[set_index], dd] + add_write
                                 else:
-                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + df.loc[result.index[set_index], gg] + add_write
-                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + df.loc[result.index[set_index], gg] + add_write
+
+                                    write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
+                                    write_memo = write_memo.replace("여기에 각인 문구:", "")
+
+                                    new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" +  result_write_num + write_memo + add_write
+                                    new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" +  result_write_num + write_memo + add_write
                             else:
                                 print("송장발부는 이미 있다..", result_memo[gg])
 
