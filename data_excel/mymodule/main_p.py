@@ -3484,6 +3484,7 @@ class FirstTab(QWidget):
             mm = '출고번호'
             n = '상품주문번호'
             nn = '상품주문번호'
+            buy_time = '주문일시'
 
             ###################
             o = ''
@@ -3540,7 +3541,7 @@ class FirstTab(QWidget):
                 print(self.df_list)
 
                 print("원하는 열 나열하기1")
-                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin]].values.tolist()
+                columns_list = self.df_list[[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin, buy_time]].values.tolist()
 
                 print("원하는 열 나열하기2")
                 print(columns_list)
@@ -3583,7 +3584,7 @@ class FirstTab(QWidget):
                 nowDay = str(nowDay_)
 
                 ################ 네이버 송장 발부 #############
-                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
+                df = pd.DataFrame(columns_list, columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin, buy_time])
                 dir_path = "C:/my_games/excel_result/" + str(year) + "/" + str(month) + "/"
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
@@ -3591,7 +3592,7 @@ class FirstTab(QWidget):
                 temporary_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp])
 
                 # 네이버 송장발부용
-                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
+                new_data = pd.DataFrame(columns=[aa, bb, cc, dd, ee, ff, qq, gg, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin, buy_time])
 
 
 
@@ -3660,8 +3661,8 @@ class FirstTab(QWidget):
                                 df.loc[result.index[set_index], gagin] = result_write_num + df.loc[result.index[set_index], dd] + str(add_write)
                             else:
 
-                                write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
-                                write_memo = write_memo.replace("여기에 각인 문구:", "")
+                                write_memo = str(df.loc[result.index[set_index], gg]).replace("여기에 문구:", "")
+                                write_memo = str(write_memo).replace("여기에 각인 문구:", "")
                                 df.loc[result.index[set_index], dd] = result_write_num + write_memo + str(add_write)
 
                                 df.loc[result.index[set_index], gagin] = result_write_num + write_memo + str(add_write)
@@ -3696,8 +3697,8 @@ class FirstTab(QWidget):
                                     new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + df.loc[result.index[set_index], dd] + add_write
                                 else:
 
-                                    write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
-                                    write_memo = write_memo.replace("여기에 각인 문구:", "")
+                                    write_memo = str(df.loc[result.index[set_index], gg]).replace("여기에 문구:", "")
+                                    write_memo = str(write_memo).replace("여기에 각인 문구:", "")
 
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_write_num + write_memo + add_write
                                     new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + write_memo + add_write
@@ -3775,7 +3776,7 @@ class FirstTab(QWidget):
                     new_data.loc[many, ee] = 1
                 # 메모1 빼고 '1년 구매건수'로 바꾸기
                 new_data = pd.DataFrame(new_data,
-                                  columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin])
+                                  columns=[aa, bb, cc, dd, ee, ff, qq, hh, ii, jj, kk, ll, mm, nn, oo, pp, gagin, buy_time])
 
                 #################################################
                 #################################################
@@ -3857,6 +3858,7 @@ class FirstTab(QWidget):
                 new_data[dd] = new_data[dd].astype(str)
                 new_data[mm] = new_data[mm].astype(str)
                 new_data[nn] = new_data[nn].astype(str)
+                new_data[buy_time] = new_data[buy_time].astype(str)
                 new_data.to_excel(excel_file_name, index=False, engine="openpyxl")
                 # writer_1.save()
 
@@ -4017,7 +4019,7 @@ class FirstTab(QWidget):
                 last = str(day) + "d_" + str(hour) + "h" + str(minute) + "m"
                 nowDay = str(nowDay_)
 
-                ################ 네이버 송장 발부 #############
+                ################ 쿠팡 송장 발부 #############
                 df = pd.DataFrame(columns_list, columns=[aa, cc, dd, ee, ff, gg, hh, jj, kk, ll, mm, nn, oo, pp, gagin, option])
                 dir_path = "C:/my_games/excel_result/" + str(year) + "/" + str(month) + "/"
                 if not os.path.isdir(dir_path):
@@ -4025,7 +4027,7 @@ class FirstTab(QWidget):
 
                 temporary_data = pd.DataFrame(columns=[aa, cc, dd, ee, ff, gg, hh, jj, kk, ll, mm, nn, oo, pp, gagin, option])
 
-                # 네이버 송장발부용
+                # 쿠팡 송장발부용
                 new_data = pd.DataFrame(columns=[aa, cc, dd, ee, ff, gg, hh, jj, kk, ll, mm, nn, oo, pp, gagin, option])
 
 
@@ -4095,8 +4097,8 @@ class FirstTab(QWidget):
                                 df.loc[result.index[set_index], gagin] = result_write_num + df.loc[result.index[set_index], option] + ":" + df.loc[result.index[set_index], dd] + str(add_write)
                             else:
 
-                                write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
-                                write_memo = write_memo.replace("여기에 각인 문구:", "")
+                                write_memo = str(df.loc[result.index[set_index], gg]).replace("여기에 문구:", "")
+                                write_memo = str(write_memo).replace("여기에 각인 문구:", "")
                                 df.loc[result.index[set_index], dd] = result_write_num + df.loc[result.index[set_index], option] + ":" + write_memo + str(add_write)
 
                                 df.loc[result.index[set_index], gagin] = result_write_num + df.loc[result.index[set_index], option] + ":" + write_memo + str(add_write)
@@ -4131,8 +4133,8 @@ class FirstTab(QWidget):
                                     new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + df.loc[result.index[set_index], option] + ":" + df.loc[result.index[set_index], dd] + add_write
                                 else:
 
-                                    write_memo = df.loc[result.index[set_index], gg].replace("여기에 문구:", "")
-                                    write_memo = write_memo.replace("여기에 각인 문구:", "")
+                                    write_memo = str(df.loc[result.index[set_index], gg]).replace("여기에 문구:", "")
+                                    write_memo = str(write_memo).replace("여기에 각인 문구:", "")
 
                                     new_data.loc[set_2, dd] = new_data.loc[set_2, dd] + "\n" + result_write_num + df.loc[result.index[set_index], option] + ":" + write_memo + add_write
                                     new_data.loc[set_2, gagin] = new_data.loc[set_2, gagin] + "\n" + result_write_num + df.loc[result.index[set_index], option] + ":" + write_memo + add_write
